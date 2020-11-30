@@ -7,49 +7,49 @@ const loader = document.getElementById('loader')
 
 
 //loading fuction 
-function loading(){
+// Show Loading
+function loading() {
     loader.hidden = false;
-    quoteContainer.hidden = true
+    quoteContainer.hidden = true;
 }
 
-function complete(){
-    if(!loader.hidden){
+// Hide Loading
+function complete() {
+    if (!loader.hidden) {
         quoteContainer.hidden = false;
-        loader.hidden= true
+        loader.hidden = true;
     }
 }
-
 
 //Getting api for quotes 
 async function getQuote(){
-        loading()
-
+    loading();
+    
     const proxy = 'https://whispering-tor-04671.herokuapp.com/';
     const apiUrl = 'https://api.forismatic.com/api/1.0/?method=getQuote&lang=en&format=json';
-   try{
-    const respones = await fetch(proxy+apiUrl);
-    const data = await respones.json()
-    console.log(data)    
+    try{
+        const respones = await fetch(proxy+apiUrl);
+        const data = await respones.json()
+        if (data.quoteAuthor === ""){
+            quoteAuthor.innerText = "Unknown"
+        }else{
+            quoteAuthor.innerText = data.quoteAuthor;
+        }
+         if(data.quoteText.length>120){
+            quoteAuthor.classList('long-quote')
+        }
+        else{
+            quoteAuthor.classList.remove('long-quote')
+       }
 
-    if (data.quoteAuthor === ""){
-        quoteAuthor.innerText = "Unknown"
-    }else{
-        quoteAuthor.innerText = data.quoteAuthor;
-    }
-
-    if(data.quoteText.length>120){
-        quoteAuthor.classList('long-quote')
-    }
-    else{
-        quoteAuthor.classList.remove('long-quote')
-       
-    }
-    quoteText.innerText = data.quoteText;
- 
-    complete()
+        quoteText.innerText = data.quoteText;
+        complete();
+     
+    
+  
    }catch(err){
        getQuote()
-       console.log("opps",err)
+      
    }
 }
 
