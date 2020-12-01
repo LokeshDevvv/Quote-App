@@ -54,8 +54,8 @@ async function getQuote(){
 }
 
 function tweet(){
-    quoteAuthor.innerText = author;
-    quoteText.innerText = text;
+    const text = quoteText.innerText;
+    const author = quoteAuthor.innerText;
     const tweetUrl = `https://twitter.com/intent/tweet?text=${text} - ${author}`;
     window.open(tweetUrl,'_blank')
 }
